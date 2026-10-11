@@ -33,7 +33,6 @@ public class PolicyService {
     }
     
     public List<PolicyResponseDTO> getPoliciesByClient(Long clientId) {
-        User client = userService.getClientById(clientId);
         return policyRepository.findAllByClientId(clientId).stream().map(policyMapper::toResponseDTO).toList();
     }
     
@@ -64,5 +63,9 @@ public class PolicyService {
     public void deletePolicy(Long id) {
         Policy policy = policyRepository.findById(id).orElseThrow(() -> new PolicyNotFoundException(id));
         policyRepository.delete(policy);
+    }
+    
+    public Policy getPolicyId(Long id) {
+        return policyRepository.findById(id).orElseThrow(() -> new PolicyNotFoundException(id));
     }
 }

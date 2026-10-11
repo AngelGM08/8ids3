@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -17,10 +16,8 @@ public class PolicyResponseDTO {
     private BigDecimal price;
     private String client;
     private String observations;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     
-    public PolicyResponseDTO(Long id, Integer totalHours, LocalDate dateStart, LocalDate dateEnd, BigDecimal price, String client, String observations, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PolicyResponseDTO(Long id, Integer totalHours, LocalDate dateStart, LocalDate dateEnd, BigDecimal price, String client, String observations) {
         this.id = id;
         this.totalHours = totalHours;
         this.dateStart= dateStart;
@@ -28,7 +25,5 @@ public class PolicyResponseDTO {
         this.price = price;
         this.client = client;
         this.observations = observations;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 }
