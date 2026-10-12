@@ -28,9 +28,7 @@ public class PolicyMapper {
                 policy.getDateEnd(),
                 policy.getPrice(),
                 policy.getClient().getName(),
-                policy.getObservations(),
-                policy.getCreatedAt(),
-                policy.getUpdatedAt()
+                policy.getObservations()
         );
     }
 }

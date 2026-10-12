@@ -5,7 +5,6 @@ import com.apibackend._ids3.dto.response.UserResponseDTO;
 import com.apibackend._ids3.exception.UserHasPoliciesException;
 import com.apibackend._ids3.exception.UserNotFoundException;
 import com.apibackend._ids3.mapper.UserMapper;
-import com.apibackend._ids3.model.Policy;
 import com.apibackend._ids3.model.Role;
 import com.apibackend._ids3.model.User;
 import com.apibackend._ids3.repository.PolicyRepository;
@@ -82,6 +81,14 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         if(!user.getRole().getName().equalsIgnoreCase("CLIENTE")){
             throw new IllegalArgumentException("El usuario con id " + id + " no es un cliente");
+        }
+        return user;
+    }
+    
+    public User getTechnicianById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if(!user.getRole().getName().equalsIgnoreCase("TÉCNICO")){
+            throw new IllegalArgumentException("El usuario con id " + id + " no es un tecnico");
         }
         return user;
     }
