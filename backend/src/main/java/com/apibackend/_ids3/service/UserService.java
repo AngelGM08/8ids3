@@ -2,12 +2,13 @@ package com.apibackend._ids3.service;
 
 import com.apibackend._ids3.dto.request.UserRequestDTO;
 import com.apibackend._ids3.dto.response.UserResponseDTO;
+import com.apibackend._ids3.exception.UserHasPoliciesException;
 import com.apibackend._ids3.exception.UserNotFoundException;
 import com.apibackend._ids3.mapper.UserMapper;
 import com.apibackend._ids3.model.Role;
 import com.apibackend._ids3.model.User;
+import com.apibackend._ids3.repository.PolicyRepository;
 import com.apibackend._ids3.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,14 @@ public class UserService {
     private final RoleService roleService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final PolicyRepository policyRepository;
     
-    public UserService(UserRepository userRepository, RoleService roleService, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleService roleService, UserMapper userMapper, PasswordEncoder passwordEncoder, PolicyRepository policyRepository) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.policyRepository = policyRepository;
     }
     
     public UserResponseDTO saveUser(UserRequestDTO dto) {
@@ -54,7 +57,6 @@ public class UserService {
         
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRfc(dto.getRfc());
         user.setContact(dto.getContact());
         user.setPhoneContact(dto.getPhoneContact());
@@ -67,6 +69,27 @@ public class UserService {
     
     public void deleteUser(Long id) {
         User user =  userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        
+        if(policyRepository.existsByClientId(id)){
+            throw new UserHasPoliciesException(id);
+        }
+        
         userRepository.delete(user);
+    }
+    
+    public User getClientById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if(!user.getRole().getName().equalsIgnoreCase("CLIENTE")){
+            throw new IllegalArgumentException("El usuario con id " + id + " no es un cliente");
+        }
+        return user;
+    }
+    
+    public User getTechnicianById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if(!user.getRole().getName().equalsIgnoreCase("TÉCNICO")){
+            throw new IllegalArgumentException("El usuario con id " + id + " no es un tecnico");
+        }
+        return user;
     }
 }

@@ -2,6 +2,8 @@ package com.apibackend._ids3.dto.response;
 
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class UserResponseDTO {
     private Long id;
@@ -13,10 +15,12 @@ public class UserResponseDTO {
     private String address;
     private String role;
     private Boolean active;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public UserResponseDTO(){}
 
-    public UserResponseDTO(Long id, String name, String email, String rfc, String contact, String phoneContact, String address, String role, Boolean active){
+    public UserResponseDTO(Long id, String name, String email, String rfc, String contact, String phoneContact, String address, String role, Boolean active,  LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -26,5 +30,7 @@ public class UserResponseDTO {
         this.address = address;
         this.role = role;
         this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }

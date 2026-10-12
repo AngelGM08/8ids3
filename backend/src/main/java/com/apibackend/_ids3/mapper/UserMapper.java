@@ -33,7 +33,9 @@ public class UserMapper {
                 user.getPhoneContact(),
                 user.getAddress(),
                 user.getRole().getName(),
-                user.getActive()
+                user.getActive(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
     }
 }
