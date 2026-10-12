@@ -87,7 +87,7 @@ public class UserService {
     
     public User getTechnicianById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        if(!user.getRole().getName().equalsIgnoreCase("TECNICO")){
+        if(!user.getRole().getName().equalsIgnoreCase("TÉCNICO")){
             throw new IllegalArgumentException("El usuario con id " + id + " no es un tecnico");
         }
         return user;

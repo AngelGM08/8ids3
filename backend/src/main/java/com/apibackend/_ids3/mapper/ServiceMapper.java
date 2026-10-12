@@ -2,19 +2,16 @@ package com.apibackend._ids3.mapper;
 
 import com.apibackend._ids3.dto.request.ServiceRequestDTO;
 import com.apibackend._ids3.dto.response.ServiceResponseDTO;
-import com.apibackend._ids3.model.Invoice;
-import com.apibackend._ids3.model.Policy;
-import com.apibackend._ids3.model.Service;
-import com.apibackend._ids3.model.User;
+import com.apibackend._ids3.model.*;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ServiceMapper {
-    public Service toEntity(ServiceRequestDTO dto, User user, Policy policy, Invoice invoice) {
-        Service service = new Service();
+    public ServiceModel toEntity(ServiceRequestDTO dto, User client, User technician, Policy policy, Invoice invoice) {
+        ServiceModel service = new ServiceModel();
         
-        service.setClient(user);
-        service.setTechnician(user);
+        service.setClient(client);
+        service.setTechnician(technician);
         service.setDate(dto.getDate());
         service.setHours(dto.getHours());
         service.setObservations(dto.getObservations());
@@ -24,7 +21,7 @@ public class ServiceMapper {
         return service;
     }
     
-    public ServiceResponseDTO toResponseDTO(Service service) {
+    public ServiceResponseDTO toResponseDTO(ServiceModel service) {
         return new ServiceResponseDTO(
                 service.getId(),
                 service.getClient().getName(),
@@ -33,7 +30,7 @@ public class ServiceMapper {
                 service.getHours(),
                 service.getObservations(),
                 service.getPolicy().getId(),
-                service.getInvoice().getId()
+                service.getInvoice() != null ? service.getInvoice().getId() : null
         );
     }
 }

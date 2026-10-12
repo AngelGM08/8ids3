@@ -32,6 +32,10 @@ public class InvoiceService {
         return invoiceMapper.toResponseDTO(invoice);
     }
     
+    public Invoice getInvoiceId(Long id){
+        return invoiceRepository.findById(id).orElseThrow(()->new InvoiceNotFoundException(id));
+    }
+    
     public InvoiceResponseDTO saveInvoice(InvoiceRequestDTO dto) {
         User client = userService.getClientById(dto.getClientId());
         Invoice invoice = invoiceMapper.toEntity(dto, client);
